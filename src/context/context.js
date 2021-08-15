@@ -15,12 +15,9 @@ function CalendarContextProvider({ children }) {
     localStorageMonths = JSON.parse(localStorageMonths);
   }
 
-  console.log(localStorageMonths);
-
   const [months, setMonths] = useState(localStorageMonths);
 
   function addMonth(monthId) {
-    console.log('adding'); 
     const monthDays = daysInMonth(monthId);
     let firstDay = new Date(monthId);
     const days = [];
@@ -37,8 +34,6 @@ function CalendarContextProvider({ children }) {
       });
     }
 
-    console.log(monthDays);
-
     const newMonth = {
       monthId,
       days,
@@ -47,14 +42,16 @@ function CalendarContextProvider({ children }) {
     // The months state will hold all the months handled by the calendar
     // The data will be saved on a different localStorage item to prevent having to load
     // all the months from the storage.
-    months[monthId] = monthId;
+    months[monthId] = {
+      monthId,
+      updated: (new Date()).getTime(),
+    }
     localStorage.setItem('months', JSON.stringify(months));
     localStorage.setItem(monthId, JSON.stringify(newMonth));
     setMonths(months);
   }
 
   function getMonth(monthId) {
-    console.log(monthId);
     const trackedMonths = Object.keys(months);
     const monthIndex = trackedMonths.indexOf(monthId);
 
@@ -67,9 +64,19 @@ function CalendarContextProvider({ children }) {
     return JSON.parse(localStorage.getItem(monthId));
   }
 
+  function addReminder(monthId, dayNumber, reminder) {
+    const month = getMonth(monthId);
+    month['days'][dayNumber].reminders.push(reminder);
+    localStorage.setItem(monthId, JSON.stringify(month));
+    months[monthId]['updated'] = (new Date()).getTime();
+    // We assign a new state to trigger updates on the calendar
+    setMonths(Object.assign({}, months));
+  }
+
   return <CalendarContext.Provider value={{
     months,
     getMonth,
+    addReminder,
   }}>
     {children}
   </CalendarContext.Provider>
