@@ -1,7 +1,7 @@
 import React from 'react';
 
 function Reminder () {
-  return <p>Reminder</p>
+  return <div>Reminder</div>
 }
 
 export default Reminder;

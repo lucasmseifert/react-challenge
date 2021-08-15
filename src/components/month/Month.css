@@ -1,0 +1,38 @@
+.month {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.month > .day {
+  width: 100%;
+}
+
+.month > .day--fill {
+  display: none;
+}
+
+.month__weekdays {
+  width: 100%;
+  display: none;
+  background-color: #2f74b5;
+  color: white;
+}
+
+.month__weekdays > span {
+  width: calc(100% / 7);
+  text-align: center;
+}
+
+@media screen and (min-width: 992px) {
+  .month__weekdays {
+    display: flex;
+  }
+
+  .month > .day {
+    width: calc(100% / 7);
+  }
+
+  .month > .day--fill {
+    display: block;
+  }
+}

@@ -6,6 +6,7 @@ import Month from "../month/Month";
 
 function Calendar() {
   const currentMonth = (new Date());
+  // currentMonth.setMonth(4);
   // Set the first day of the month as the month ID
   const monthId = getMonthIdFromDate(currentMonth);
 

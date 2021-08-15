@@ -1,0 +1,29 @@
+.day {
+  box-shadow: 0 0 0 1px black;
+}
+
+.day__weekday {
+  padding: 0.5rem;
+  background: #2f74b5;
+  color: white;
+}
+
+.day__body {
+  min-height: 200px;
+  padding: 1rem;
+  position: relative;
+}
+
+.day__number {
+  position: absolute;
+  top: 0.25rem;
+  left: 0.25rem;
+}
+
+
+@media screen and (min-width:992px) {
+  
+  .day__weekday {
+    display: none;
+  }
+}
