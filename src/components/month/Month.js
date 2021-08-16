@@ -17,16 +17,16 @@ function Month({
   const prefixDays = [];
   const suffixDays = [];
   for(let i = 0; i < firstWeekday; i++) {
-    prefixDays.push(<div className='day day--fill'></div>);
+    prefixDays.push(<div key={`${monthId}-prefix-${i}`} className='day day--fill'></div>);
   }
   for(let i = lastWeekday; i < 7; i++) {
-    suffixDays.push(<div className='day day--fill'></div>);
+    suffixDays.push(<div key={`${monthId}-suffix-${i}`} className='day day--fill'></div>);
   }
 
   const weekdays = [];
 
   for(let i = 0; i < 7; i++) {
-    weekdays.push(<span>{getWeekdayName(i)}</span>);
+    weekdays.push(<span key={`${monthId}-weekday-${i}`}>{getWeekdayName(i)}</span>);
   }
 
   return (
@@ -37,7 +37,7 @@ function Month({
       { prefixDays }
       {
         days.map((day, index) => {
-          return <Day id={day.id} {...day} />
+          return <Day key={day.id} {...day} monthId={monthId} />
         })
       }
       { suffixDays }
