@@ -1,31 +1,35 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import { useCalendarContext } from '../../context/context';
+import React, { useState } from 'react';
 import { getWeekdayName } from '../../utils';
 import Reminder from '../reminder/Reminder';
+import Modal from '../modal/Modal';
+import AddReminderForm from '../addReminderForm/AddReminderForm';
 import './Day.css';
 
-function Day({ id, weekday, day, reminders }) {
-  const {
-    addReminder,
-  } = useCalendarContext();
+import { FaPlus } from 'react-icons/fa';
 
-  const [reminderState, setReminderState] = useState(reminders);
+function Day({ id, weekday, day, reminders, monthId }) {
+  const [showModal, setShowModal] = useState(false);
 
   return <div className='day'>
     <p className='day__weekday'>{getWeekdayName(weekday)}</p>
     <div className='day__body'>
       <span className='day__number'>{day}</span>
       {
-        reminderState.map((reminder, index) => {
-          return <Reminder key={`${id}-${index}`} />
+        reminders.map((reminder, index) => {
+          return <Reminder key={`reminder-${id}-${index}`} {...reminder} />
         })
       }
     </div>
-    {/* <button onClick={() => {
-      setReminderState([...reminderState,'test']);
-      console.log(reminders);
-    }}>click to add reminder</button> */}
+    <button className='day__add-reminder' aria-label={`Add reminder to day ${day}`} title='Add reminder' onClick={() => {
+      setShowModal(true);
+    }}><FaPlus /></button>
+    {
+      showModal && (
+        <Modal isOpen={showModal} setIsOpen={setShowModal}>
+          <AddReminderForm day={day} monthId={monthId} closeModal={()=>setShowModal(false)} />
+        </Modal>
+      )
+    }
   </div>
 }
 
