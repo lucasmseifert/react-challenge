@@ -3,7 +3,7 @@ import ReactDom from "react-dom";
 import { FaTimes } from "react-icons/fa";
 import './Modal.css';
 
-function Modal({children, isOpen, setIsOpen}) {
+function Modal({ children, isOpen, setIsOpen }) {
 
   const modalRef = useRef(null);
 
@@ -14,12 +14,12 @@ function Modal({children, isOpen, setIsOpen}) {
     }
   }
 
-  // Use a portal to prevent z-index issues
+  // Use a portal to prevent z-index issues. #modal-root is placed after #root on index.html
   return ReactDom.createPortal(
     <div className='modal' onClick={clickHandler} ref={modalRef}>
       <div className='modal__content'>
         <div className='modal__close'>
-          <button onClick={() => setIsOpen(false)}><FaTimes/></button>
+          <button autoFocus onClick={() => setIsOpen(false)} aria-label='Close' title='Close'><FaTimes /></button>
         </div>
         {children}
       </div>
