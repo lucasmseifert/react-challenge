@@ -7,20 +7,27 @@ import './Month.css';
 function Month({
   monthId
 }) {
-  const { getMonth } = useCalendarContext();
+  const { 
+    getMonth, 
+    getPreviousMonthDays, 
+    getNextMonthDays,
+    changeMonth
+  } = useCalendarContext();
+
   const { days } = getMonth(monthId);
 
   const firstWeekday = days[0].weekday;
   const lastWeekday = days[days.length - 1].weekday;
   
+  let prefixDays = []
+  let suffixDays = [];
   // Check if the month needs prefix or suffix days
-  const prefixDays = [];
-  const suffixDays = [];
-  for(let i = 0; i < firstWeekday; i++) {
-    prefixDays.push(<div key={`${monthId}-prefix-${i}`} className='day day--fill'></div>);
+  if (firstWeekday) {
+    prefixDays = getPreviousMonthDays(firstWeekday);
   }
-  for(let i = lastWeekday; i < 7; i++) {
-    suffixDays.push(<div key={`${monthId}-suffix-${i}`} className='day day--fill'></div>);
+
+  if (lastWeekday < 6) {
+    suffixDays = getNextMonthDays((7 - lastWeekday) - 1);
   }
 
   const weekdays = [];
@@ -34,13 +41,21 @@ function Month({
       <div className='month__weekdays'>
         { weekdays }
       </div>
-      { prefixDays }
+      {
+        prefixDays.map((day, index) => {
+          return <Day key={day.id} {...day} fill={true} onClick={() => changeMonth(-1)} />
+        })
+      }
       {
         days.map((day, index) => {
           return <Day key={day.id} {...day} monthId={monthId} />
         })
       }
-      { suffixDays }
+      { 
+        suffixDays.map((day, index) => {
+          return <Day key={day.id} {...day} fill={true} onClick={() => changeMonth(1)} />
+        })
+      }
     </div>
   )
 }
