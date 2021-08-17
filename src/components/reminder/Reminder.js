@@ -8,13 +8,13 @@ import { FaPen, FaTrash } from 'react-icons/fa';
 function Reminder(props) {
   const {
     id,
-    city,
     background,
     fontColor,
     text,
     time,
     day,
     monthId,
+    fill,
   } = props;
 
   const { deleteReminder } = useCalendarContext();
@@ -23,9 +23,17 @@ function Reminder(props) {
     backgroundColor: background,
     color: fontColor,
   }}>
-    <span className='reminder__time'>{time}</span> - <span className='reminder__text'>{text}</span>
-    <button onClick={() => setShowEdit(true)} aria-label='Edit reminder' title='Edit reminder'><FaPen /></button>
-    <button onClick={() => deleteReminder(monthId, day - 1, id)} aria-label='Delete reminder' title='Delete reminder'><FaTrash /></button>
+    <p className='reminder__body'>
+      <span className='reminder__time'>{time}</span> - <span className='reminder__text'>{text}</span>
+    </p>
+    {
+      !fill && (
+        <div className='reminder__actions'>
+          <button className='button' onClick={() => setShowEdit(true)} aria-label='Edit reminder' title='Edit reminder'><FaPen /></button>
+          <button className='button' onClick={() => deleteReminder(monthId, day - 1, id)} aria-label='Delete reminder' title='Delete reminder'><FaTrash /></button>
+        </div>
+      )
+    }
     {
       showEdit && (
         <Modal isOpen={showEdit} setIsOpen={setShowEdit}>

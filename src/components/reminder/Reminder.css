@@ -1,3 +1,16 @@
+.reminder {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.reminder__body {
+  margin-bottom: 0.25rem;
+}
+
+.reminder__actions {
+  text-align: right;
+}
+
 .reminder__text {
   word-break: break-word;
 }
