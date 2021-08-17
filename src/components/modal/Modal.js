@@ -19,7 +19,7 @@ function Modal({ children, isOpen, setIsOpen }) {
     <div className='modal' onClick={clickHandler} ref={modalRef}>
       <div className='modal__content'>
         <div className='modal__close'>
-          <button autoFocus onClick={() => setIsOpen(false)} aria-label='Close' title='Close'><FaTimes /></button>
+          <button className='button button--icon' autoFocus onClick={() => setIsOpen(false)} aria-label='Close' title='Close'><FaTimes /></button>
         </div>
         {children}
       </div>
