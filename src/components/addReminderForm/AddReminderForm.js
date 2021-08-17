@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useCalendarContext } from '../../context/context';
 import { v4 as uuidv4 } from 'uuid';
-import './AddReminderForm.css';
 
 function AddReminderForm({ day, monthId, closeModal }) {
 
