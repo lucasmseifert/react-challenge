@@ -69,7 +69,7 @@ function AddReminderForm({day, monthId, closeModal}) {
       backgroundColor: background,
       color: fontColor,
     }}>
-      This is the preview text for the reminder.
+      This is the preview text for the reminder color scheme.
     </div>
     <button type='submit'>Add reminder</button>
   </form>
