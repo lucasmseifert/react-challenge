@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { daysInMonth, binarySearch } from '../utils';
+import { daysInMonth, binarySearch, getMonthIdFromDate } from '../utils';
 
 const CalendarContext = React.createContext();
 
@@ -82,6 +82,24 @@ function CalendarContextProvider({ children }) {
     setMonths(Object.assign({}, months));
   }
 
+  function editReminder (monthId, dayNumber, reminderId, newDay, reminder) {
+    console.log(monthId);
+    console.log(dayNumber);
+    console.log(reminderId);
+    console.log(newDay);
+    console.log(reminder);
+    // All the reminders follow a strict ordering on the addition, so the easiest way to
+    // edit is delete the reminder and adding it back.
+    deleteReminder(monthId, dayNumber, reminderId);
+
+    // Now we add it back, calculating new monthId and day number based on the newDay passed
+    const newDateObject = new Date(newDay);
+    const newMonthId = getMonthIdFromDate(newDateObject);
+    const newDate = newDateObject.getDate();
+
+    addReminder(newMonthId, newDate, reminder);
+  }
+
   function deleteReminder(monthId, dayNumber, reminderId) {
     let month = getMonth(monthId);
     const reminders = month['days'][dayNumber].reminders;
@@ -114,6 +132,7 @@ function CalendarContextProvider({ children }) {
     months,
     getMonth,
     addReminder,
+    editReminder,
     deleteReminder,
     deleteAllReminders,
   }}>
