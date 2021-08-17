@@ -19,10 +19,10 @@ code {
     monospace;
 }
 
-/* Helper classes */
+/* Layout classes */
 .container {
   max-width: 720px;
-  padding: 0 20px;
+  padding: 0 1.25rem;
   margin: 0 auto;
 }
 
@@ -45,4 +45,60 @@ code {
   .container {
     max-width: 1320px;
   }
+}
+
+/*  HTML elements */
+button {
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+}
+
+.button {
+  background-color: #2f74b5;
+  color: white;
+  border: 0;
+  box-shadow: 1px 1px 3px 0px rgb(0 0 0 / 45%);
+}
+
+.button--icon {
+  background-color: transparent;
+  color: black;
+  box-shadow: none;
+}
+
+input {
+  height: 2rem;
+}
+
+input[type=color] {
+  cursor: pointer;
+}
+
+/*  Forms */
+.form__item {
+  display: flex;
+  flex-flow: column nowrap;
+  margin-bottom: 0.5rem;
+}
+
+.form__item label {
+  margin-bottom: 0.5rem;
+}
+
+.form__reminder-color {
+  display: flex;
+  flex-flow: row wrap;
+  border: 0;
+  padding: 0;
+}
+
+.form__reminder-color .form__item {
+  flex: 0 0 50%;
+  margin-bottom: 1rem;
+}
+
+.form__preview {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
 }
