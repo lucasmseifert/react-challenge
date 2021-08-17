@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useCalendarContext } from '../../context/context';
 import { v4 as uuidv4 } from 'uuid';
 import './AddReminderForm.css';
@@ -9,6 +9,9 @@ function AddReminderForm({day, monthId, closeModal}) {
     addReminder,
   } = useCalendarContext();
 
+  const [background, setBackground] = useState('#ffffff');
+  const [fontColor, setFontColor] = useState('#000000');
+
   function addReminderHandler(event) {
     event.preventDefault();
     console.log(event);
@@ -18,18 +21,20 @@ function AddReminderForm({day, monthId, closeModal}) {
     
     const text = formData.get('reminder-text');
     const time = formData.get('reminder-time');
-    const color = formData.get('reminder-color');
+    const fontColor = formData.get('reminder-font-color');
+    const background = formData.get('reminder-background-color');
     const city = formData.get('reminder-city');
     const id = uuidv4();
 
-    console.log(text, time, color, city, id, day, monthId);
+    console.log(time);
 
     addReminder(monthId, day - 1, {
       id,
       text,
       city,
       time,
-      color,
+      background,
+      fontColor
     });
 
     closeModal();
@@ -38,7 +43,7 @@ function AddReminderForm({day, monthId, closeModal}) {
   return <form className='form' onSubmit={addReminderHandler}>
     <div className='form__item'>
       <label htmlFor='reminder-text'>Reminder text</label>
-      <input name='reminder-text' id='reminder-text' required />
+      <input maxLength='30'  name='reminder-text' id='reminder-text' required />
     </div>
     <div className='form__item'>
       <label htmlFor='reminder-city'>Reminder city</label>
@@ -49,8 +54,22 @@ function AddReminderForm({day, monthId, closeModal}) {
       <input type='time' name='reminder-time' id='reminder-time' required />
     </div>
     <div className='form__item'>
-      <label htmlFor='reminder-color'>Reminder color</label>
-      <input type='color' name='reminder-color' id='reminder-color' />
+      <label htmlFor='reminder-background-color'>Reminder background color</label>
+      <input type='color' name='reminder-background-color' id='reminder-background-color' value={background} onChange={(event) => {
+        setBackground(event.target.value);
+      }} />
+    </div>
+    <div className='form__item'>
+      <label htmlFor='reminder-font-color'>Reminder font color</label>
+      <input type='color' name='reminder-font-color' id='reminder-font-color' value={fontColor} onChange={(event) => {
+        setFontColor(event.target.value);
+      }} />
+    </div>
+    <div className='form__preview' style={{
+      backgroundColor: background,
+      color: fontColor,
+    }}>
+      This is the preview text for the reminder.
     </div>
     <button type='submit'>Add reminder</button>
   </form>
