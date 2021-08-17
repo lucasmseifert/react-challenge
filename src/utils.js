@@ -13,7 +13,7 @@ export function daysInMonth(date) {
 }
 
 export function getMonthIdFromDate(date) {
-  return `${date.getMonth() + 1}-1-${date.getFullYear()}`;
+  return `${date.getUTCMonth() + 1}-1-${date.getUTCFullYear()}`;
 }
 
 export function getWeekdayName(weekday) {
