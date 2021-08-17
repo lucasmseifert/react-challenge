@@ -1,18 +1,16 @@
 import React from "react";
 import { useCalendarContext } from "../../context/context";
-import { getMonthIdFromDate } from "../../utils";
 import Month from "../month/Month";
 
 
 function Calendar() {
-  const currentMonth = (new Date());
-  // currentMonth.setMonth(4);
-  // Set the first day of the month as the month ID
-  const monthId = getMonthIdFromDate(currentMonth);
+  const { shownMonth, changeMonth } = useCalendarContext();
 
   return <section className='container'>
-    <h1>Calendar</h1>
-    <Month monthId={ monthId } />
+    <h1>Calendar: { shownMonth }</h1>
+    <button onClick={() => changeMonth(1)}>+</button>
+    <button onClick={() => changeMonth(-1)}>-</button>
+    <Month monthId={ shownMonth } />
   </section>
 }
 
