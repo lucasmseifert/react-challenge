@@ -15,7 +15,28 @@ function CalendarContextProvider({ children }) {
     localStorageMonths = JSON.parse(localStorageMonths);
   }
 
+  const currentMonth = (new Date());
+  // Set the first day of the month as the month ID
+  currentMonth.setMonth(currentMonth.getMonth());
+  const monthId = getMonthIdFromDate(currentMonth);
+
   const [months, setMonths] = useState(localStorageMonths);
+  const [shownMonth, setShownMonth] = useState(monthId);
+
+  function changeMonth(increment) {
+    let newMonth = (new Date(shownMonth));
+    newMonth.setMonth(newMonth.getMonth() + increment);
+    newMonth = getMonthIdFromDate(newMonth);
+    const trackedMonths = Object.keys(months);
+    const monthIndex = trackedMonths.indexOf(newMonth);
+
+    if(monthIndex === -1) {
+      // If the month is not tracked, track it
+      addMonth(newMonth);
+    }
+
+    setShownMonth(newMonth);
+  }
 
   function addMonth(monthId) {
     const monthDays = daysInMonth(monthId);
@@ -46,20 +67,13 @@ function CalendarContextProvider({ children }) {
       monthId,
       updated: (new Date()).getTime(),
     }
+    
     localStorage.setItem('months', JSON.stringify(months));
     localStorage.setItem(monthId, JSON.stringify(newMonth));
     setMonths(Object.assign({}, months));
   }
 
   function getMonth(monthId) {
-    const trackedMonths = Object.keys(months);
-    const monthIndex = trackedMonths.indexOf(monthId);
-
-    if(monthIndex === -1) {
-      // If the month is not tracked, track it
-      addMonth(monthId);
-    }
-
     // Return the data saved on this month
     return JSON.parse(localStorage.getItem(monthId));
   }
@@ -83,11 +97,6 @@ function CalendarContextProvider({ children }) {
   }
 
   function editReminder (monthId, dayNumber, reminderId, newDay, reminder) {
-    console.log(monthId);
-    console.log(dayNumber);
-    console.log(reminderId);
-    console.log(newDay);
-    console.log(reminder);
     // All the reminders follow a strict ordering on the addition, so the easiest way to
     // edit is delete the reminder and adding it back.
     deleteReminder(monthId, dayNumber, reminderId);
@@ -130,7 +139,9 @@ function CalendarContextProvider({ children }) {
 
   return <CalendarContext.Provider value={{
     months,
+    shownMonth,
     getMonth,
+    changeMonth,
     addReminder,
     editReminder,
     deleteReminder,
