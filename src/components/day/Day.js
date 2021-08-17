@@ -3,11 +3,14 @@ import { getWeekdayName } from '../../utils';
 import Reminder from '../reminder/Reminder';
 import Modal from '../modal/Modal';
 import AddReminderForm from '../addReminderForm/AddReminderForm';
+import { useCalendarContext } from '../../context/context';
 import './Day.css';
 
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaTrash } from 'react-icons/fa';
 
 function Day({ id, weekday, day, reminders, monthId }) {
+  const { deleteAllReminders } = useCalendarContext();
+
   const [showModal, setShowModal] = useState(false);
 
   return <div className='day'>
@@ -16,13 +19,16 @@ function Day({ id, weekday, day, reminders, monthId }) {
       <span className='day__number'>{day}</span>
       {
         reminders.map((reminder, index) => {
-          return <Reminder key={`reminder-${id}-${index}`} {...reminder} />
+          return <Reminder key={`reminder-${id}-${index}`} {...reminder} day={day} monthId={monthId} />
         })
       }
     </div>
     <button className='day__add-reminder' aria-label={`Add reminder to day ${day}`} title='Add reminder' onClick={() => {
       setShowModal(true);
     }}><FaPlus /></button>
+    <button className='day__delete-all' aria-label='Remove all reminders' title='Remove all reminders' onClick={() => {
+      deleteAllReminders(monthId, day - 1);
+    }}><FaTrash /></button>
     {
       showModal && (
         <Modal isOpen={showModal} setIsOpen={setShowModal}>
