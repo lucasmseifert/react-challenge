@@ -1,0 +1,23 @@
+.calendar {
+  padding-bottom: 0.5rem;
+}
+
+.calendar__header {
+  position: relative;
+  padding-right: 6rem;
+}
+
+.calendar__actions {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.calendar__action svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.calendar__action + .calendar__action {
+  margin-left: 0.75rem;
+}
