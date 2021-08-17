@@ -28,7 +28,7 @@ function Day({ id, weekday, day, reminders, monthId, fill, onClick }) {
     {
       !fill && (
         <div className='day__actions'>
-          <button className='day__add-reminder button button--icon' aria-label={`Add reminder to day ${day}`} title='Add reminder' onClick={() => {
+          <button data-testid={`add-reminder-day-${day}`} className='day__add-reminder button button--icon' aria-label={`Add reminder to day ${day}`} title='Add reminder' onClick={() => {
             setShowModal(true);
           }}><FaPlus /></button>
           <button className='day__delete-all button button--icon' aria-label='Remove all reminders' title='Remove all reminders' onClick={() => {
