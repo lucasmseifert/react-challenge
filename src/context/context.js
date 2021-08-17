@@ -23,6 +23,10 @@ function CalendarContextProvider({ children }) {
   const [months, setMonths] = useState(localStorageMonths);
   const [shownMonth, setShownMonth] = useState(monthId);
 
+  if (!months[monthId]) {
+    addMonth(monthId);
+  }
+
   function changeMonth(increment) {
     let newMonth = (new Date(shownMonth));
     newMonth.setMonth(newMonth.getMonth() + increment);
@@ -30,7 +34,7 @@ function CalendarContextProvider({ children }) {
     const trackedMonths = Object.keys(months);
     const monthIndex = trackedMonths.indexOf(newMonth);
 
-    if(monthIndex === -1) {
+    if (monthIndex === -1) {
       // If the month is not tracked, track it
       addMonth(newMonth);
     }
@@ -67,7 +71,7 @@ function CalendarContextProvider({ children }) {
       monthId,
       updated: (new Date()).getTime(),
     }
-    
+
     localStorage.setItem('months', JSON.stringify(months));
     localStorage.setItem(monthId, JSON.stringify(newMonth));
     setMonths(Object.assign({}, months));
@@ -78,12 +82,35 @@ function CalendarContextProvider({ children }) {
     return JSON.parse(localStorage.getItem(monthId));
   }
 
+  // This function will retrieve the last days of the previous month
+  function getPreviousMonthDays(days) {
+    const currentMonth = (new Date(shownMonth));
+    // Get the previous month
+    currentMonth.setMonth(currentMonth.getMonth() - 1);
+
+    const previousMonthId = getMonthIdFromDate(currentMonth);
+    const previousMonth = getMonth(previousMonthId);
+    const previousMonthDays = previousMonth.days.slice(0 - days);
+    return previousMonthDays;
+  }
+
+  function getNextMonthDays(days) {
+    const currentMonth = (new Date(shownMonth));
+    // Get the next month
+    currentMonth.setMonth(currentMonth.getMonth() + 1);
+    const nextMonthId = getMonthIdFromDate(currentMonth);
+    const nextMonth = getMonth(nextMonthId);
+    const nextMonthDays = nextMonth.days.slice(0, days);
+    return nextMonthDays;
+  }
+
   function addReminder(monthId, dayNumber, reminder) {
     const month = getMonth(monthId);
 
     function compareReminder(a, b) {
       return a.time > b.time;
     }
+
     // When we add we make sure it's being placed in a sorted manner.
     const reminders = month['days'][dayNumber].reminders;
     const index = binarySearch(reminders, reminder, compareReminder);
@@ -96,15 +123,14 @@ function CalendarContextProvider({ children }) {
     setMonths(Object.assign({}, months));
   }
 
-  function editReminder (monthId, dayNumber, reminderId, newDay, reminder) {
+  function editReminder(monthId, dayNumber, reminderId, newDay, reminder) {
     // All the reminders follow a strict ordering on the addition, so the easiest way to
     // edit is delete the reminder and adding it back.
     deleteReminder(monthId, dayNumber, reminderId);
-
     // Now we add it back, calculating new monthId and day number based on the newDay passed
     const newDateObject = new Date(newDay);
     const newMonthId = getMonthIdFromDate(newDateObject);
-    const newDate = newDateObject.getDate();
+    const newDate = newDateObject.getUTCDate() - 1;
 
     addReminder(newMonthId, newDate, reminder);
   }
@@ -141,6 +167,8 @@ function CalendarContextProvider({ children }) {
     months,
     shownMonth,
     getMonth,
+    getPreviousMonthDays,
+    getNextMonthDays,
     changeMonth,
     addReminder,
     editReminder,
