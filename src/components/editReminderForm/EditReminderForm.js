@@ -62,35 +62,37 @@ function EditReminderForm(props) {
     </div>
     <div className='form__item'>
       <label htmlFor='reminder-city'>Reminder city</label>
-      <input name='reminder-city' id='reminder-city' value={cityState} onChange={ (event) => setCityState(event.target.value) } />
+      <input name='reminder-city' id='reminder-city' value={cityState} onChange={(event) => setCityState(event.target.value)} />
     </div>
     <div className='form__item'>
       <label htmlFor='reminder-day'>Reminder day</label>
-      <input type='date' name='reminder-day' id='reminder-day' required value={currentDay} onChange={(event) => setCurrentDay(event.target.value) } />
+      <input type='date' name='reminder-day' id='reminder-day' required value={currentDay} onChange={(event) => setCurrentDay(event.target.value)} />
     </div>
     <div className='form__item'>
       <label htmlFor='reminder-time'>Reminder time</label>
-      <input type='time' name='reminder-time' id='reminder-time' required value={timeState} onChange={ (event) => setTimeState(event.target.value )} />
+      <input type='time' name='reminder-time' id='reminder-time' required value={timeState} onChange={(event) => setTimeState(event.target.value)} />
     </div>
-    <div className='form__item'>
-      <label htmlFor='reminder-background-color'>Reminder background color</label>
-      <input type='color' name='reminder-background-color' id='reminder-background-color' value={backgroundColor} onChange={(event) => {
-        setBackgroundColor(event.target.value);
-      }} />
-    </div>
-    <div className='form__item'>
-      <label htmlFor='reminder-font-color'>Reminder font color</label>
-      <input type='color' name='reminder-font-color' id='reminder-font-color' value={fontColorState} onChange={(event) => {
-        setFontColorState(event.target.value);
-      }} />
-    </div>
-    <div className='form__preview' style={{
-      backgroundColor: backgroundColor,
-      color: fontColorState,
-    }}>
-      This is the preview text for the reminder color scheme.
-    </div>
-    <button type='submit'>Edit reminder</button>
+    <fieldset className='form__reminder-color'>
+      <div className='form__item'>
+        <label htmlFor='reminder-background-color'>Reminder background color</label>
+        <input type='color' name='reminder-background-color' id='reminder-background-color' value={backgroundColor} onChange={(event) => {
+          setBackgroundColor(event.target.value);
+        }} />
+      </div>
+      <div className='form__item'>
+        <label htmlFor='reminder-font-color'>Reminder font color</label>
+        <input type='color' name='reminder-font-color' id='reminder-font-color' value={fontColorState} onChange={(event) => {
+          setFontColorState(event.target.value);
+        }} />
+      </div>
+      <div className='form__preview' style={{
+        backgroundColor: backgroundColor,
+        color: fontColorState,
+      }}>
+        This is the preview text for the reminder color scheme.
+      </div>
+    </fieldset>
+    <button className='button' type='submit'>Edit reminder</button>
   </form>
 }
 
