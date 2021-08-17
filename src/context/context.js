@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { daysInMonth } from '../utils';
+import { daysInMonth, binarySearch } from '../utils';
 
 const CalendarContext = React.createContext();
 
@@ -48,7 +48,7 @@ function CalendarContextProvider({ children }) {
     }
     localStorage.setItem('months', JSON.stringify(months));
     localStorage.setItem(monthId, JSON.stringify(newMonth));
-    setMonths(months);
+    setMonths(Object.assign({}, months));
   }
 
   function getMonth(monthId) {
@@ -66,9 +66,46 @@ function CalendarContextProvider({ children }) {
 
   function addReminder(monthId, dayNumber, reminder) {
     const month = getMonth(monthId);
-    month['days'][dayNumber].reminders.push(reminder);
-    localStorage.setItem(monthId, JSON.stringify(month));
+
+    function compareReminder(a, b) {
+      return a.time > b.time;
+    }
+    // When we add we make sure it's being placed in a sorted manner.
+    const reminders = month['days'][dayNumber].reminders;
+    const index = binarySearch(reminders, reminder, compareReminder);
+    reminders.splice(index, 0, reminder);
+
+    month['days'][dayNumber].reminders = reminders;
     months[monthId]['updated'] = (new Date()).getTime();
+    localStorage.setItem(monthId, JSON.stringify(month));
+    // We assign a new state to trigger updates on the calendar
+    setMonths(Object.assign({}, months));
+  }
+
+  function deleteReminder(monthId, dayNumber, reminderId) {
+    let month = getMonth(monthId);
+    const reminders = month['days'][dayNumber].reminders;
+
+    const newReminders = reminders.filter((item) => {
+      return item.id !== reminderId;
+    });
+
+    month['days'][dayNumber].reminders = newReminders;
+
+    months[monthId]['updated'] = (new Date()).getTime();
+    localStorage.setItem(monthId, JSON.stringify(month));
+    // We assign a new state to trigger updates on the calendar
+    setMonths(Object.assign({}, months));
+  }
+
+  function deleteAllReminders(monthId, dayNumber) {
+    let month = getMonth(monthId);
+
+    // To delete all the reminders, just assign a new array
+    month['days'][dayNumber].reminders = [];
+
+    months[monthId]['updated'] = (new Date()).getTime();
+    localStorage.setItem(monthId, JSON.stringify(month));
     // We assign a new state to trigger updates on the calendar
     setMonths(Object.assign({}, months));
   }
@@ -77,6 +114,8 @@ function CalendarContextProvider({ children }) {
     months,
     getMonth,
     addReminder,
+    deleteReminder,
+    deleteAllReminders,
   }}>
     {children}
   </CalendarContext.Provider>
