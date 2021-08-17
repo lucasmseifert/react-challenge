@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { daysInMonth, binarySearch, getMonthIdFromDate } from '../utils';
 
 const CalendarContext = React.createContext();
@@ -24,7 +24,24 @@ function CalendarContextProvider({ children }) {
   const [shownMonth, setShownMonth] = useState(monthId);
 
   if (!months[monthId]) {
+    // if the current month is not initialized, initialize it and the adjacent months
     addMonth(monthId);
+  }
+  
+  const previousMonth = new Date(shownMonth);
+  previousMonth.setUTCMonth(previousMonth.getUTCMonth() - 1);
+  const previousId = getMonthIdFromDate(previousMonth);
+
+  const nextMonth = new Date(shownMonth);
+  nextMonth.setUTCMonth(nextMonth.getUTCMonth() + 1);
+  const nextId = getMonthIdFromDate(nextMonth);
+
+  if (!months[previousId]) {
+    addMonth(previousId);
+  }
+
+  if (!months[nextId]) {
+    addMonth(nextId);
   }
 
   function changeMonth(increment) {
@@ -89,6 +106,7 @@ function CalendarContextProvider({ children }) {
     currentMonth.setMonth(currentMonth.getMonth() - 1);
 
     const previousMonthId = getMonthIdFromDate(currentMonth);
+
     const previousMonth = getMonth(previousMonthId);
     const previousMonthDays = previousMonth.days.slice(0 - days);
     return previousMonthDays;
@@ -99,6 +117,7 @@ function CalendarContextProvider({ children }) {
     // Get the next month
     currentMonth.setMonth(currentMonth.getMonth() + 1);
     const nextMonthId = getMonthIdFromDate(currentMonth);
+
     const nextMonth = getMonth(nextMonthId);
     const nextMonthDays = nextMonth.days.slice(0, days);
     return nextMonthDays;
