@@ -33,6 +33,10 @@
   color: #2f74b5;
 }
 
+.day--weekend {
+  background-color: rgb(242 242 242 / 63%);
+}
+
 @media screen and (min-width:992px) {
 
   .day {
