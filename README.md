@@ -2,6 +2,7 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+First you need to run 'npm install' then the regular create-react-app commands are available like bellow. :D
 ## Available Scripts
 
 In the project directory, you can run:
