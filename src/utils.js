@@ -16,6 +16,10 @@ export function getMonthIdFromDate(date) {
   return `${date.getUTCMonth() + 1}-1-${date.getUTCFullYear()}`;
 }
 
+export function getDateFromMonthId(monthId) {
+  return (new Date(monthId)).toLocaleDateString(undefined, {year: 'numeric', month: 'long'});
+}
+
 export function getWeekdayName(weekday) {
   switch (weekday) {
     case 0:
