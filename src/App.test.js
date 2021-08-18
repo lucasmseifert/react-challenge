@@ -33,7 +33,7 @@ it("Test the add reminder functionality", () => {
   rerender(
     <CalendarContextProvider>
       <App /> 
-    </CalendarContextProvider>
+    </CalendarContextProvider> 
   );
   //expect(window.localStorage.getItem("name")).toBe(newName);
 });
